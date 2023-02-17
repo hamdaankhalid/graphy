@@ -1,3 +1,14 @@
+# Graphy
+Graphy is a frontend application that I wrote to create pretty graphs with data sent from my API's. Why? Well for once I want to write something that actually looks good!
+
+## Features
+1. User Registration.
+2. User Login.
+3. Port CSV files into the application.
+4. View your data in multiple graph formats.
+5. Write queries on your data in a defined language.
+
+# DEV INFO
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
