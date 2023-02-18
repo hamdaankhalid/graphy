@@ -1,11 +1,18 @@
 import Link from "next/link"
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export interface NavOption {
+	availableOnPath: string;
 	text: string;
 	link: string;
+	isPrivate: bool;
 }
 
-export default function Navbar({ navOptions }: { navOptions: Array<NavOption>}) {
+export default function Navbar({ currentPath, navOptions }: 
+	{ currentPath: string, navOptions: Array<NavOption>}
+) {
+	const { user, error, isLoading } = useUser();
+
 	return (
 		<>
 			<div className="navBar">
@@ -14,12 +21,20 @@ export default function Navbar({ navOptions }: { navOptions: Array<NavOption>}) 
 				</div>
 				
 				<div className="navOptions">
-					{navOptions.map(({text, link}, id) => {
-						return (
-						<div className="navOption" key={id}>
-							<Link href={link}>{text}</Link>
-						</div>);
-					})}	
+					{navOptions.filter(navOption => { 
+						return new RegExp(navOption.availableOnPath).test(currentPath)
+						}).map(({text, link, isPrivate}, id) => {
+							if (
+								((isPrivate && user) || !isPrivate) &&
+								!error
+								) {
+								return (
+								<div className="navOption" key={id}>
+									<Link href={link}>{text}</Link>
+								</div>)
+							}
+						})
+					  }
 				</div>
 			</div>
 		</>
