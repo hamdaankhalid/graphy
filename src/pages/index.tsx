@@ -11,6 +11,12 @@ const navigationBar: Array<NavOption> = [
 export default function Home() {
   return (
     <>
+			<Head>
+			<title>Graphy</title>
+				<meta name="description" content="Graph your data" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+			</Head>
+
 			<NavBar navOptions={navigationBar} />
 
 			<div className="cards"> 

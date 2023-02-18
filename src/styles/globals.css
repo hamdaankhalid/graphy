@@ -36,8 +36,8 @@ footer {
 }
 
 .card {
-	width: 250px;
-	min-height: 250px;
+	width: 40vh;
+	height: 40vh;;
 	display: flex;
 	border-radius: 10px;
 	background-color: #ffffff;
