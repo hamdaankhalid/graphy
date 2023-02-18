@@ -1,3 +1,10 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: 96vh;
+}
+
 #backgroundVideo {
 	position: fixed;
 	right: 0;
@@ -7,22 +14,30 @@
 	z-index: -10;
 }
 
-.content {
+footer {
+	color: white;
+	opacity: 0.5;
+	width: 100%;
+}
+
+.cards {
+	margin-top: 10%;
 	display: flex;
 	justify-content: space-evenly;
 }
 
 @media (max-width: 800px) {
-	.content {
+	.cards{
 		display: flex;
 		flex-direction: column;
-		align-items: end;
+		align-items: flex-end;
 		gap: 15px;
 	}
 }
+
 .card {
-	width: 200px;
-	min-height: 200px;
+	width: 250px;
+	min-height: 250px;
 	display: flex;
 	border-radius: 10px;
 	background-color: #ffffff;
@@ -46,10 +61,96 @@
 }
 
 .card > .cardInfo {
+	display: flex;
+	align-items: center;
 	margin-left: 0px;
 	width: 100%;
 	padding-left: 5px;
 	padding-right: 5px;
 	background-image: linear-gradient(90deg, #ACA3CE 40%, white 60.5%);
+}
+
+.navBar {
+	display: flex;
+	margin: 20px;
+}
+
+.navBar > .title {
+	color: #BFF6F2;
+	font-weight: bold;
+	font-family: "sans-serif";
+	font-size: 2em;
+}
+
+.navBar > .navOptions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 100%;
+	gap: 30px;
+}
+
+.navOption {
+	background-color: white;
+	opacity: 0.5;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+
+.navOption:Hover {
+	opacity: 0.9;
+}
+
+.navOption > a {
+	color: black;
+	text-decoration: none;
+}
+
+.infoModal {
+	background-color: white;
+	position: fixed;
+	width: 40%;
+	height: 30%;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+	background-color: white;
+	opacity: 0.95;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+@media (max-width: 800px) {
+	.infoModal {
+		width: 50%;
+		height: 50%;
+	}
+}
+
+
+.infoModal > .infoModalText {
+	display: flex;
+	align-items: center;
+	height: 80%;
+}
+
+.infoModal > .infoModalButtons {
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 10px;
+}
+
+.dangerButton {
+	font-size: 20px;
+	color: red;
+	background-color: white;
+	border: none;
+}
+
+.dangerButton:Hover {
+	font-size: 18px;
 }
 
