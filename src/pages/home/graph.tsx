@@ -1,12 +1,18 @@
-import GraphBoard from "components/graphBoard";
+import LineGraph from "components/lineGraph";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
-export default function Graph() {
+function Graph() {
   return (
     <>
       <div className="graphPage">
-        <div>Upload Data Here</div>
-        <GraphBoard />
+        <div className="dataBar">Upload Data Bar</div>
+
+        <div className="graphsContainer">
+          <LineGraph />
+        </div>
       </div>
     </>
   );
 }
+
+export default withPageAuthRequired(Graph);
