@@ -12,14 +12,12 @@ export function readyCanvas(canvasContext: CanvasRenderingContext2D) {
  * be drawn on the grid
  * */
 export function drawMutedGrid(canvasContext: CanvasRenderingContext2D) {
-  const padding = 30;
-  const height = canvasContext.canvas.height - padding;
-  const width = canvasContext.canvas.width - padding;
+  const height = canvasContext.canvas.height;
+  const width = canvasContext.canvas.width;
 
-  // we want to set these such that every interscetion creates a square not rect
-  // 5 pixel is worth 1 unit?
-  const numRows = height / 15;
-  const numCols = width / 15;
+  const pixelToUnitRatio = 15;
+  const numRows = height / pixelToUnitRatio;
+  const numCols = width / pixelToUnitRatio;
 
   const dy = height / numRows;
   const dx = width / numCols;
@@ -27,16 +25,16 @@ export function drawMutedGrid(canvasContext: CanvasRenderingContext2D) {
   // draw rows
   for (let row = 0; row < numRows; row++) {
     canvasContext.beginPath();
-    canvasContext.moveTo(padding, padding + row * dy);
-    canvasContext.lineTo(width, padding + row * dy);
+    canvasContext.moveTo(0, row * dy);
+    canvasContext.lineTo(width, row * dy);
     canvasContext.stroke();
   }
 
   // for cols
   for (let col = 0; col < numCols; col++) {
     canvasContext.beginPath();
-    canvasContext.moveTo(padding + col * dx, padding);
-    canvasContext.lineTo(padding + col * dx, height);
+    canvasContext.moveTo(col * dx, 0);
+    canvasContext.lineTo(col * dx, height);
     canvasContext.stroke();
   }
 }
