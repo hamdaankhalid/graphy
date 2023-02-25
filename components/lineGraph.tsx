@@ -1,5 +1,11 @@
 import { useRef, useEffect } from "react";
-import { drawMutedGrid, readyCanvas } from "utils/graphingUtils";
+import {
+  drawAxis,
+  drawMutedGrid,
+  drawYNumberLine,
+  getAxisDetails,
+  readyCanvas,
+} from "utils/graphingUtils";
 
 export interface LineGraphArgs {
   xLabel: string;
@@ -20,25 +26,13 @@ export default function LineGraph({
     const graphCan = graphCanRef.current;
     const ctx = graphCan.getContext("2d");
 
+    const axisDetails = getAxisDetails(ctx);
+
     readyCanvas(ctx);
-    drawMutedGrid(ctx);
+    drawMutedGrid(ctx, axisDetails);
+    drawYNumberLine(ctx, axisDetails);
 
-    // make axis
-    const height = ctx.canvas.height;
-    const width = ctx.canvas.width;
-    const labelPadding = 25;
-    ctx.strokeStyle = "black";
-    // x-axis
-    ctx.beginPath();
-    ctx.moveTo(labelPadding, height - labelPadding);
-    ctx.lineTo(width - labelPadding, height - labelPadding);
-    ctx.stroke();
-
-    // y-axis
-    ctx.beginPath();
-    ctx.moveTo(labelPadding, height - labelPadding);
-    ctx.lineTo(labelPadding, labelPadding);
-    ctx.stroke();
+    drawAxis(ctx, axisDetails);
     // overlay data on graph
   }, []);
 
