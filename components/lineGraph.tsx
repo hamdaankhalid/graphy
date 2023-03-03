@@ -4,6 +4,7 @@ import {
   drawMutedGrid,
   drawYNumberLine,
   getAxisDetails,
+  cartesianDrawFactory,
   readyCanvas,
 } from "utils/graphingUtils";
 
@@ -25,17 +26,19 @@ export default function LineGraph({
   useEffect(() => {
     const graphCan = graphCanRef.current;
     const ctx = graphCan.getContext("2d");
-
-    const axisDetails = getAxisDetails(ctx); // Maybe this is where we should return a function that can draw something based on cartesian coordinates?
+    const axisDetails = getAxisDetails(ctx);
+    const cartesianDraw = cartesianDrawFactory(ctx, axisDetails);
 
     readyCanvas(ctx);
     drawMutedGrid(ctx, axisDetails);
     drawYNumberLine(ctx, axisDetails);
 
     drawAxis(ctx, axisDetails);
-    // overlay data on graph
-    // render only what remains visible.
-, []);
+
+    for (let i = 0; i < yData.length; i++) {
+      cartesianDraw({ x: xData[i], y: yData[i] });
+    }
+  }, []);
 
   return (
     <>

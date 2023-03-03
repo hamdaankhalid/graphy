@@ -13,11 +13,17 @@ export interface AxisDetails {
   endOfY: Point;
 }
 
-/**
- * Given the axis details and a point this function draws out a dot
- * */
-export function cartesianDraw(axisDetails: AxisDetails, point: Point) {
-  // todo
+export type CanvasCartesianTranslator = (point: Point) => void;
+
+export function cartesianDrawFactory(
+  canvasContext: CanvasRenderingContext2D,
+  axisDetails: AxisDetails
+): CanvasCartesianTranslator {
+  return (point: Point) => {
+    const chartX = axisDetails.origin.x + point.x * pixelToUnitRatio;
+    const chartY = axisDetails.origin.y - point.y * pixelToUnitRatio;
+    canvasContext.fillRect(chartX, chartY, 5, 5);
+  };
 }
 
 export function readyCanvas(canvasContext: CanvasRenderingContext2D) {
