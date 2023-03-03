@@ -26,7 +26,7 @@ export default function LineGraph({
     const graphCan = graphCanRef.current;
     const ctx = graphCan.getContext("2d");
 
-    const axisDetails = getAxisDetails(ctx);
+    const axisDetails = getAxisDetails(ctx); // Maybe this is where we should return a function that can draw something based on cartesian coordinates?
 
     readyCanvas(ctx);
     drawMutedGrid(ctx, axisDetails);
@@ -34,7 +34,8 @@ export default function LineGraph({
 
     drawAxis(ctx, axisDetails);
     // overlay data on graph
-  }, []);
+    // render only what remains visible.
+, []);
 
   return (
     <>

@@ -13,6 +13,13 @@ export interface AxisDetails {
   endOfY: Point;
 }
 
+/**
+ * Given the axis details and a point this function draws out a dot
+ * */
+export function cartesianDraw(axisDetails: AxisDetails, point: Point) {
+  // todo
+}
+
 export function readyCanvas(canvasContext: CanvasRenderingContext2D) {
   canvasContext.canvas.style.width = "100%";
   canvasContext.canvas.style.height = "100%";
