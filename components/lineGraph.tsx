@@ -12,12 +12,12 @@ export interface LineGraphArgs {
   xLabel: string;
   yLabel: string;
   xData: Array<number>;
-  yData: Array<number>;
+  yDatas: Array<Array<number>>;
 }
 
 export default function LineGraph({
   xData,
-  yData,
+  yDatas,
   xLabel,
   yLabel,
 }: LineGraphArgs) {
@@ -34,11 +34,12 @@ export default function LineGraph({
     drawYNumberLine(ctx, axisDetails);
 
     drawAxis(ctx, axisDetails);
-
-    for (let i = 0; i < yData.length; i++) {
-      cartesianDraw({ x: xData[i], y: yData[i] });
-    }
-  }, []);
+    yDatas.forEach((yData) => {
+      for (let i = 0; i < yData.length; i++) {
+        cartesianDraw({ x: xData[i], y: yData[i] });
+      }
+    });
+  }, [yDatas, xData]);
 
   return (
     <>
