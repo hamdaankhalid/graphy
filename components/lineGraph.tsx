@@ -3,8 +3,7 @@ import {
   drawAxis,
   drawMutedGrid,
   drawYNumberLine,
-  getAxisDetails,
-  cartesianDrawFactory,
+  getGraphFromCanvas,
   readyCanvas,
 } from "utils/graphingUtils";
 
@@ -35,17 +34,13 @@ export default function LineGraph({
   useEffect(() => {
     const graphCan = graphCanRef.current;
     const ctx = graphCan.getContext("2d");
-    const axisDetails = getAxisDetails(ctx);
-    const cartesianToPixelTranslator = cartesianDrawFactory(axisDetails);
-
+    const [axisDetails, cartesianToPixelTranslator] = getGraphFromCanvas(ctx);
     readyCanvas(ctx);
     drawMutedGrid(ctx, axisDetails);
     drawYNumberLine(ctx, axisDetails);
-
     drawAxis(ctx, axisDetails);
     yDatas.forEach((yData) => {
       const color = getRandomColor();
-      console.log(color);
       for (let i = 0; i < yData.length; i++) {
         const { x, y } = cartesianToPixelTranslator({
           x: xData[i],

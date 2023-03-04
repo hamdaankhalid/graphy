@@ -15,7 +15,7 @@ export interface AxisDetails {
 
 export type CanvasCartesianTranslator = (point: Point) => Point;
 
-export function cartesianDrawFactory(
+function cartesianTranslatorFactory(
   axisDetails: AxisDetails
 ): CanvasCartesianTranslator {
   return (point: Point): Point => {
@@ -25,7 +25,7 @@ export function cartesianDrawFactory(
   };
 }
 
-export function readyCanvas(canvasContext: CanvasRenderingContext2D) {
+export function readyCanvas(canvasContext: CanvasRenderingContext2D): void {
   canvasContext.canvas.style.width = "100%";
   canvasContext.canvas.style.height = "100%";
   canvasContext.canvas.width = canvasContext.canvas.offsetWidth;
@@ -33,9 +33,8 @@ export function readyCanvas(canvasContext: CanvasRenderingContext2D) {
   canvasContext.strokeStyle = "#F8F8F8";
 }
 
-export function getAxisDetails(
-  canvasContext: CanvasRenderingContext2D
-): AxisDetails {
+// Given a canvas and the inherent padding we have configured give us the axis metadata
+function getAxisDetails(canvasContext: CanvasRenderingContext2D): AxisDetails {
   const height = canvasContext.canvas.height;
   const width = canvasContext.canvas.width;
   const origin: Point = { x: labelPadding, y: height - labelPadding };
@@ -44,6 +43,15 @@ export function getAxisDetails(
   return { origin, endOfX, endOfY };
 }
 
+export function getGraphFromCanvas(
+  canvasContext: CanvasRenderingContext2D
+): [AxisDetails, CanvasCartesianTranslator] {
+  const axisDetails = getAxisDetails(canvasContext);
+  const cct = cartesianTranslatorFactory(axisDetails);
+  return [axisDetails, cct];
+}
+
+// Given axis details and a canvas, draw out X and Y axis
 export function drawAxis(
   canvasContext: CanvasRenderingContext2D,
   axisDetails: AxisDetails
@@ -104,6 +112,7 @@ export function drawMutedGrid(
   }
 }
 
+// Given a canvas, and axis details draw a number line along Y that fits the screen and labelPadding
 export function drawYNumberLine(
   canvasContext: CanvasRenderingContext2D,
   axisDetails: AxisDetails
