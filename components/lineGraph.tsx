@@ -15,6 +15,15 @@ export interface LineGraphArgs {
   yDatas: Array<Array<number>>;
 }
 
+function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 export default function LineGraph({
   xData,
   yDatas,
@@ -27,7 +36,7 @@ export default function LineGraph({
     const graphCan = graphCanRef.current;
     const ctx = graphCan.getContext("2d");
     const axisDetails = getAxisDetails(ctx);
-    const cartesianDraw = cartesianDrawFactory(ctx, axisDetails);
+    const cartesianToPixelTranslator = cartesianDrawFactory(axisDetails);
 
     readyCanvas(ctx);
     drawMutedGrid(ctx, axisDetails);
@@ -35,8 +44,15 @@ export default function LineGraph({
 
     drawAxis(ctx, axisDetails);
     yDatas.forEach((yData) => {
+      const color = getRandomColor();
+      console.log(color);
       for (let i = 0; i < yData.length; i++) {
-        cartesianDraw({ x: xData[i], y: yData[i] });
+        const { x, y } = cartesianToPixelTranslator({
+          x: xData[i],
+          y: yData[i],
+        });
+        ctx.fillStyle = color;
+        ctx.fillRect(x, y, 3, 3);
       }
     });
   }, [yDatas, xData]);

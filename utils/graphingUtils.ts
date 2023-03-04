@@ -13,16 +13,15 @@ export interface AxisDetails {
   endOfY: Point;
 }
 
-export type CanvasCartesianTranslator = (point: Point) => void;
+export type CanvasCartesianTranslator = (point: Point) => Point;
 
 export function cartesianDrawFactory(
-  canvasContext: CanvasRenderingContext2D,
   axisDetails: AxisDetails
 ): CanvasCartesianTranslator {
-  return (point: Point) => {
+  return (point: Point): Point => {
     const chartX = axisDetails.origin.x + point.x * pixelToUnitRatio;
     const chartY = axisDetails.origin.y - point.y * pixelToUnitRatio;
-    canvasContext.fillRect(chartX, chartY, 5, 5);
+    return { x: chartX, y: chartY };
   };
 }
 
