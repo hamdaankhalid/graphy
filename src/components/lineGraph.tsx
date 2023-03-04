@@ -5,7 +5,7 @@ import {
   drawYNumberLine,
   getGraphFromCanvas,
   readyCanvas,
-} from "utils/graphingUtils";
+} from "src/utils/graphingUtils";
 
 export interface LineGraphArgs {
   xLabel: string;
@@ -50,7 +50,7 @@ export default function LineGraph({
         ctx.fillRect(x, y, 3, 3);
       }
     });
-  }, [yDatas, xData]);
+  }, [yDatas, xData]); // we should also rerender if screen size changes :/
 
   return (
     <>

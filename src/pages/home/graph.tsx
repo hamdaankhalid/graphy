@@ -1,4 +1,4 @@
-import LineGraph from "components/lineGraph";
+import LineGraph from "src/components/lineGraph";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
 function Graph() {

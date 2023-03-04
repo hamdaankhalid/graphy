@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import Card from "components/card";
-import { WhatContent, WhyContent, HowContent } from "constants/landingPage";
+import Card from "src/components/card";
+import { WhatContent, WhyContent, HowContent } from "src/constants/landingPage";
 
 export default function Home() {
   return (
