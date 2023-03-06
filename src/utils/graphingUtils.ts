@@ -7,6 +7,11 @@ export interface Point {
   y: number;
 }
 
+export interface Offset {
+  x: number;
+  y: number;
+}
+
 export interface AxisDetails {
   origin: Point;
   endOfX: Point;
@@ -33,21 +38,25 @@ export function readyCanvas(canvasContext: CanvasRenderingContext2D): void {
   canvasContext.strokeStyle = "#F8F8F8";
 }
 
-// Given a canvas and the inherent padding we have configured give us the axis metadata
-function getAxisDetails(canvasContext: CanvasRenderingContext2D): AxisDetails {
+// Given a canvas and the inherent padding w
+// e have configured give us the axis metadata
+function getAxisDetails(canvasContext: CanvasRenderingContext2D, offset: Offset): AxisDetails {
   const height = canvasContext.canvas.height;
   const width = canvasContext.canvas.width;
+	// TODO: Use offset here
   const origin: Point = { x: labelPadding, y: height - labelPadding };
   const endOfX: Point = { x: width - labelPadding, y: origin.y };
   const endOfY: Point = { x: origin.x, y: labelPadding };
+
   return { origin, endOfX, endOfY };
 }
 
 export function getGraphFromCanvas(
   canvasContext: CanvasRenderingContext2D
+  offset: Offset
 ): [AxisDetails, CanvasCartesianTranslator] {
-  const axisDetails = getAxisDetails(canvasContext);
-  const cct = cartesianTranslatorFactory(axisDetails);
+  const axisDetails = getAxisDetails(canvasContext, offset);
+  const cct = cartesianTranslatorFactory(axisDetails, offset);
   return [axisDetails, cct];
 }
 

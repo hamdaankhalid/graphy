@@ -1,4 +1,4 @@
-import LineGraph from "src/components/lineGraph";
+import ScatterPlot from "src/components/scatterPlot";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
 function Graph() {
@@ -15,10 +15,10 @@ function Graph() {
   return (
     <>
       <div className="graphPage">
-        <div className="dataBar">Upload Data Bar</div>
+        <div className="dataBar">Choose X range, and y function</div>
 
         <div className="graphsContainer">
-          <LineGraph xData={x} yDatas={y} />
+          <ScatterPlot xData={x} yDatas={y} />
         </div>
       </div>
     </>

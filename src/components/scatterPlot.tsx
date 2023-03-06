@@ -7,9 +7,7 @@ import {
   readyCanvas,
 } from "src/utils/graphingUtils";
 
-export interface LineGraphArgs {
-  xLabel: string;
-  yLabel: string;
+interface ScatterPlotArgs {
   xData: Array<number>;
   yDatas: Array<Array<number>>;
 }
@@ -23,22 +21,19 @@ function getRandomColor() {
   return color;
 }
 
-export default function LineGraph({
-  xData,
-  yDatas,
-  xLabel,
-  yLabel,
-}: LineGraphArgs) {
+export default function ScatterPlot({ xData, yDatas }: ScatterPlotArgs) {
   const graphCanRef = useRef(null);
 
   useEffect(() => {
     const graphCan = graphCanRef.current;
     const ctx = graphCan.getContext("2d");
     const [axisDetails, cartesianToPixelTranslator] = getGraphFromCanvas(ctx);
+
     readyCanvas(ctx);
     drawMutedGrid(ctx, axisDetails);
     drawYNumberLine(ctx, axisDetails);
     drawAxis(ctx, axisDetails);
+
     yDatas.forEach((yData) => {
       const color = getRandomColor();
       for (let i = 0; i < yData.length; i++) {
