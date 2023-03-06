@@ -1,22 +1,8 @@
+import { Point, Line, AxisDetails } from "src/utils/geometry";
+
 const labelRightPadding = 5;
 const labelPadding = 25;
 const pixelToUnitRatio = 15;
-
-export interface Point {
-  x: number;
-  y: number;
-}
-
-export interface Offset {
-  x: number;
-  y: number;
-}
-
-export interface AxisDetails {
-  origin: Point;
-  endOfX: Point;
-  endOfY: Point;
-}
 
 export type CanvasCartesianTranslator = (point: Point) => Point;
 
@@ -38,25 +24,60 @@ export function readyCanvas(canvasContext: CanvasRenderingContext2D): void {
   canvasContext.strokeStyle = "#F8F8F8";
 }
 
-// Given a canvas and the inherent padding w
-// e have configured give us the axis metadata
-function getAxisDetails(canvasContext: CanvasRenderingContext2D, offset: Offset): AxisDetails {
+function getAxisDetails(
+  canvasContext: CanvasRenderingContext2D,
+  offset: Point
+): AxisDetails {
   const height = canvasContext.canvas.height;
   const width = canvasContext.canvas.width;
-	// TODO: Use offset here
-  const origin: Point = { x: labelPadding, y: height - labelPadding };
-  const endOfX: Point = { x: width - labelPadding, y: origin.y };
-  const endOfY: Point = { x: origin.x, y: labelPadding };
+  const canvasUpperLeftCorner: Point = { x: labelPadding, y: labelPadding };
+  const canvasLowerLeftCorner: Point = {
+    x: labelPadding,
+    y: height - labelPadding,
+  };
+  const canvasUpperRightCorner: Point = {
+    x: width - labelPadding,
+    y: labelPadding,
+  };
+  const canvasLowerRightCorner: Point = {
+    x: width - labelPadding,
+    y: height - labelPadding,
+  };
 
-  return { origin, endOfX, endOfY };
+  const middleOfGraph: Point = {
+    x: (canvasUpperRightCorner.x - canvasUpperLeftCorner.x) / 2,
+    y: (canvasLowerRightCorner.y - canvasUpperRightCorner.y) / 2,
+  };
+
+  /* Intuition:
+   * Origin should be on the middle of the canvas, but the offset accounts for any movement of the graph base
+   * when offset is such that we are 2 units right, this essentially means our graph's origin will start 2 units
+   * to the left of original, offset x +ve means right scrolled graph. Simillarly an offset y +v means we have scrolled upwards.
+   */
+  const origin: Point = {
+    x: middleOfGraph.x - offset.x,
+    y: middleOfGraph.y - offset.y,
+  };
+
+  const x: Line = {
+    start: { x: canvasUpperLeftCorner.x, y: origin.y },
+    end: { x: canvasUpperRightCorner.x, y: origin.y },
+  };
+
+  const y: Line = {
+    start: { x: origin.x, y: canvasUpperLeftCorner.y },
+    end: { x: origin.y, y: canvasLowerLeftCorner.y },
+  };
+
+  return { origin, x, y };
 }
 
 export function getGraphFromCanvas(
-  canvasContext: CanvasRenderingContext2D
-  offset: Offset
+  canvasContext: CanvasRenderingContext2D,
+  offset: Point
 ): [AxisDetails, CanvasCartesianTranslator] {
   const axisDetails = getAxisDetails(canvasContext, offset);
-  const cct = cartesianTranslatorFactory(axisDetails, offset);
+  const cct = cartesianTranslatorFactory(axisDetails);
   return [axisDetails, cct];
 }
 
