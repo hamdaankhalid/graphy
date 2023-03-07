@@ -1,20 +1,15 @@
-import { Point, Line, AxisDetails } from "src/utils/geometry";
+import {
+  Point,
+  Line,
+  AxisDetails,
+  euclideanDistance,
+  CanvasCartesianTranslator,
+  cartesianTranslatorFactory,
+} from "src/utils/geometry";
 
 const labelRightPadding = 5;
 const labelPadding = 25;
 const pixelToUnitRatio = 15;
-
-export type CanvasCartesianTranslator = (point: Point) => Point;
-
-function cartesianTranslatorFactory(
-  axisDetails: AxisDetails
-): CanvasCartesianTranslator {
-  return (point: Point): Point => {
-    const chartX = axisDetails.origin.x + point.x * pixelToUnitRatio;
-    const chartY = axisDetails.origin.y - point.y * pixelToUnitRatio;
-    return { x: chartX, y: chartY };
-  };
-}
 
 export function readyCanvas(canvasContext: CanvasRenderingContext2D): void {
   canvasContext.canvas.style.width = "100%";
@@ -77,7 +72,7 @@ export function getGraphFromCanvas(
   offset: Point
 ): [AxisDetails, CanvasCartesianTranslator] {
   const axisDetails = getAxisDetails(canvasContext, offset);
-  const cct = cartesianTranslatorFactory(axisDetails);
+  const cct = cartesianTranslatorFactory(axisDetails, pixelToUnitRatio);
   return [axisDetails, cct];
 }
 
@@ -99,10 +94,6 @@ export function drawAxis(
   canvasContext.moveTo(axisDetails.origin.x, axisDetails.origin.y);
   canvasContext.lineTo(axisDetails.endOfY.x, axisDetails.endOfY.y);
   canvasContext.stroke();
-}
-
-function euclideanDistance(p1: Point, p2: Point) {
-  return ((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2) ** 0.5;
 }
 
 /*
