@@ -1,11 +1,11 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   drawAxis,
   drawMutedGrid,
   drawYNumberLine,
   getGraphFromCanvas,
   readyCanvas,
-  Offset,
+  getRandomColor,
 } from "src/utils/graphingUtils";
 
 /*
@@ -13,33 +13,58 @@ import {
  * can be moved left, right, up, down
  * has an axis drawn before hand.
  * */
-export default function GraphBase() {
+export default function GraphBase({
+  xData,
+  yDatas,
+}: {
+  xData: Array<number>;
+  yDatas: Array<{ data: Array<number>; color: string }>;
+}) {
   const graphCanRef = useRef(null);
-  // start offset from the middle
-  const currentOffset: Offset = { x: 0, y: 0 };
+  // start initial offset from the middle
+  const [currentOffset, setCurrentOffset] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  const mutateOffset = (x: number, y: number) => {
+    return () => {
+      setCurrentOffset({ x: currentOffset.x + x, y: currentOffset.y + y });
+    };
+  };
 
   useEffect(() => {
     const graphCan = graphCanRef.current;
     const ctx = graphCan.getContext("2d");
-
-    // TODO: this has to be w.r.t offset
-    const [axisDetails, cartesianToPixelTranslator] = getGraphFromCanvas(ctx);
-
+    if (!ctx) {
+      return;
+    }
+    const [axisDetails, cartesianToPixelTranslator] = getGraphFromCanvas(
+      ctx,
+      currentOffset
+    );
     readyCanvas(ctx);
-    drawMutedGrid(ctx, axisDetails);
+    drawAxis(ctx, axisDetails);
 
-    // TODO: this has to be w.r.t offset
-    drawYNumberLine(ctx, axisDetails); // only if already existing
-    drawAxis(ctx, axisDetails); // only if already existing
-  }, [currentOffset]);
+    yDatas.forEach((yData) => {
+      for (let i = 0; i < yData.data.length; i++) {
+        const { x, y } = cartesianToPixelTranslator({
+          x: xData[i],
+          y: yData.data[i],
+        });
+        ctx.fillStyle = yData.color;
+        ctx.fillRect(x, y, 3, 3);
+      }
+    });
+  }, [currentOffset, xData, yDatas]);
 
   return (
     <>
       <div>
-        <button>Up</button>
-        <button>Left</button>
-        <button>Right</button>
-        <button>Up</button>
+        <button onClick={mutateOffset(0, -15)}>Up</button>
+        <button onClick={mutateOffset(-15, 0)}>Left</button>
+        <button onClick={mutateOffset(15, 0)}>Right</button>
+        <button onClick={mutateOffset(0, 15)}>Down</button>
       </div>
 
       <canvas ref={graphCanRef}> </canvas>

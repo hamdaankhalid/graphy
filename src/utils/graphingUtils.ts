@@ -61,7 +61,7 @@ function getAxisDetails(
 
   const y: Line = {
     start: { x: origin.x, y: canvasUpperLeftCorner.y },
-    end: { x: origin.y, y: canvasLowerLeftCorner.y },
+    end: { x: origin.x, y: canvasLowerLeftCorner.y },
   };
 
   return { origin, x, y };
@@ -85,14 +85,14 @@ export function drawAxis(
 
   // x-axis
   canvasContext.beginPath();
-  canvasContext.moveTo(axisDetails.origin.x, axisDetails.origin.y);
-  canvasContext.lineTo(axisDetails.endOfX.x, axisDetails.endOfX.y);
+  canvasContext.moveTo(axisDetails.x.start.x, axisDetails.x.start.y);
+  canvasContext.lineTo(axisDetails.x.end.x, axisDetails.x.end.y);
   canvasContext.stroke();
 
   // y-axis
   canvasContext.beginPath();
-  canvasContext.moveTo(axisDetails.origin.x, axisDetails.origin.y);
-  canvasContext.lineTo(axisDetails.endOfY.x, axisDetails.endOfY.y);
+  canvasContext.moveTo(axisDetails.y.start.x, axisDetails.y.start.y);
+  canvasContext.lineTo(axisDetails.y.end.x, axisDetails.y.end.y);
   canvasContext.stroke();
 }
 
@@ -145,4 +145,13 @@ export function drawYNumberLine(
     const numTextY = axisDetails.origin.y - num * pixelToUnitRatio;
     canvasContext.fillText(`${num}`, numTextX, numTextY);
   }
+}
+
+export function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
